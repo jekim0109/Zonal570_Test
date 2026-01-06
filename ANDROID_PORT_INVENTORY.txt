@@ -1,0 +1,146 @@
+Inventory report for: .
+
+Summary counts (by extension):
+  .svn-base: 2992
+  .h: 636
+  .cpp: 312
+  .c: 169
+  .bak: 71
+  .user: 42
+  .lib: 32
+  .vcproj: 24
+  .filters: 13
+  .vcxproj: 13
+  .dll: 13
+  .rc: 12
+  .sln: 8
+  .aps: 8
+  .txt: 7
+  [noext]: 5
+  .exe: 4
+  .db: 3
+  .suo: 3
+  .vdproj: 2
+  .wav: 2
+  .xml: 2
+  .log: 2
+  .sdf: 1
+  .htm: 1
+  .db-journal: 1
+  .idl: 1
+  .rgs: 1
+  .config: 1
+  .py: 1
+  .yml: 1
+  .hpp: 1
+  .ico: 1
+
+Solutions: 8
+  FMS.sln
+  testProject/testProject.sln
+  FMSUI/FMSUI.sln
+  Test485/Test485.sln
+  ServerTest/FMS.sln
+  Wizard/Wizard.sln
+  ServerSetDlg/ServerSetDlg.sln
+  FMS_DIDGEN/FMS_DIDGEN.sln
+
+vcxproj files: 37
+  testProject/testSysInfo/testSysInfo.vcproj
+  testProject/testMixer/testMixer.vcproj
+  testProject/testRegistry/testRegistry.vcproj
+  testProject/testMailSlot/testMailSlot.vcproj
+  testProject/testHotkey/testHotkey.vcproj
+  testProject/testRTC/testRTC.vcproj
+  FMSUI/FMSUI.vcproj
+  FMSUI/FMSUI.vcxproj
+  Launcher/Launcher.vcxproj
+  Launcher/Launcher.vcproj
+  Test485/Test485/Test485.vcproj
+  FMS/FMS.vcxproj
+  FMS/FMS.vcproj
+  ServerTest/FMS.vcproj
+  Wizard2/Wizard2.vcproj
+  Wizard2/Wizard.vcproj
+  Wizard2/Wizard2.vcxproj
+  Wizard/Wizard.vcproj
+  Wizard/Wizard.vcxproj
+  FMSWSvc/FMSWSvc.vcxproj
+  FMSWSvc/FMSWSvc.vcproj
+  AFC/AFC.vcproj
+  AFC/AFC.vcxproj
+  ServerSetDlg/ServerSetDlg.vcproj
+  Turnstile/Turnstile.vcproj
+  Turnstile/Turnstile.vcxproj
+  HWManager/HWManager.vcxproj
+  HWManager/HWManager.vcproj
+  PIP/PIP.vcproj
+  PIP/PIP.vcxproj
+  AVL/AVL.vcproj
+  AVL/AVL.vcxproj
+  IPCMonitor/IPCMonitor.vcproj
+  IPCMonitor/IPCMonitor.vcxproj
+  FMS_DIDGEN/FMS_DIDGEN/FMS_DIDGEN.vcproj
+  ProcessManager/ProcessManager.vcproj
+  ProcessManager/ProcessManager.vcxproj
+
+Source files: 481, Header files: 637, Resource files: 12
+
+Large files (>50MB): 26
+  FMS.sdf (193 MB)
+  .svn/pristine/50/50cd8c6cbc8687bfee310b8e38803f504e824db1.svn-base (93 MB)
+  .svn/pristine/6a/6aca3d850150ac1f5ffd5f1b80865e01e6004786.svn-base (82 MB)
+  .svn/pristine/b5/b551f26d7aeac305163d2894b6bcc8607e56cd2b.svn-base (82 MB)
+  .svn/pristine/c0/c0c6ef73b924cb0f3497896463899aab80863253.svn-base (83 MB)
+  .svn/pristine/f2/f29fcb89f1b7ffb17bb6dedceb9f5da009a7928d.svn-base (61 MB)
+  .svn/pristine/e4/e4e74c1f68a07b90cf0c15604b2a2c523de23312.svn-base (94 MB)
+  .svn/pristine/ed/edbe04c13ea966f91df4f0106a6cf6df3a976c52.svn-base (93 MB)
+  .svn/pristine/27/27b8f432d23365dd82cd18ee7986099f3f10f8bd.svn-base (62 MB)
+  .svn/pristine/16/169920bc141fd9fda1af19ad07b50821b11f55f6.svn-base (84 MB)
+  .svn/pristine/42/424f6de8c928d5a9642f5bbb0cbb8f941098cb6f.svn-base (85 MB)
+  .svn/pristine/74/74d791bd75e747daa790f428f0fa83a849f67f85.svn-base (93 MB)
+  .svn/pristine/2a/2a7fee652f7d9ec09eb39c385ba8d4a7e327904c.svn-base (61 MB)
+  .svn/pristine/9f/9f5ce36e4bf19648175374646cc397e84187e8cb.svn-base (61 MB)
+  .svn/pristine/31/310907a71b6a55a010dd14d654cc90b6ef9714e4.svn-base (51 MB)
+  .svn/pristine/3a/3a0d3b546ab561f6bf91a74872e20b6d44014344.svn-base (61 MB)
+  .svn/pristine/0a/0a86510ac91dd440197c686c66af8ac1052027cc.svn-base (65 MB)
+  .svn/pristine/af/afdd56b523fc2f1b1f9a2978a95628a374dbedd5.svn-base (61 MB)
+  .svn/pristine/c5/c53418563e35ced2ff274825e5ec95d1bd384e10.svn-base (61 MB)
+  .svn/pristine/f8/f83aa12ef1c21e180562180ed22d8b8e723c8767.svn-base (147 MB)
+  .svn/pristine/2c/2cdb754154860f4961d7ffea28fe7f4dff1baedc.svn-base (62 MB)
+  .svn/pristine/83/83f5f87a30d52c4548984f072b685d4800a4f7a2.svn-base (62 MB)
+  .svn/pristine/1b/1b3d1e96b0f1c8b5e6e537bc54078a87f08afb0f.svn-base (82 MB)
+  .svn/pristine/78/788cf8cb54f95db755880ffb0d9eeaac7ffae64a.svn-base (82 MB)
+  .svn/pristine/13/1354d3cf7bcb7e10d79e395c0a73f6c071e703a6.svn-base (82 MB)
+  .vs/FMS/v16/Browse.VC.db (182 MB)
+
+
+Windows-specific indicator counts:
+  afx: 328
+  HWND : 198
+  SUSI: 114
+  HANDLE : 85
+  #include <windows.h>: 60
+  HINSTANCE: 56
+  Service: 46
+  CDialog: 20
+  CoInitialize: 16
+  Afx: 14
+  WinMain(: 14
+  CreateWindow: 13
+  CWnd: 11
+  CoCreateInstance: 8
+  MFC: 7
+  #include <winsock: 5
+  RegOpenKey: 2
+  RegCreateKey: 2
+  RegSetValue: 2
+  ws2_: 2
+  CreateService: 1
+  SetupDi: 1
+
+External libs/dlls referenced (sample):
+  SUSI_IMC_POWERMANAGEMENT.dll
+  TREK550CTRL.dll
+  comment(lib,"msxml2.lib
+  ole32.dll

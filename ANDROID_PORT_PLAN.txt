@@ -1,0 +1,100 @@
+Android 포팅 계획서 - ZONAL570
+
+요약
+- 권장 접근: 핵심 C/C++ 로직은 Android NDK(CMake)로 포팅하고 UI는 Android 네이티브(Java/Kotlin)로 재구현.
+- 대안: Qt for Android(많은 UI 재사용 가능) 또는 완전 Java/Kotlin으로 재작성.
+
+목표
+- 기존 Windows 기반 ZONAL570 소스를 Android 앱으로 이식하여 Android 디바이스에서 동작하도록 한다.
+
+단계별 작업
+1) 초기 평가 / 인벤토리
+  - 확인 항목: Windows 전용 API(Win32, MFC, Registry, Service, COM 등) 사용 여부
+  - 하드웨어/SDK 의존성 확인(예: SUSI_*, 특수 DLL/.lib)
+  - 외부 라이브러리 목록: openssl, Proj4, tinyxml 등(포팅 가능)
+  - 결과물: 모듈별 호환성 표(포팅 가능 / 대체 필요 / 제거)
+
+2) 접근 방식 결정
+  - 옵션 A (권장): NDK + Android UI (JNI로 네이티브 호출)
+  - 옵션 B: Qt for Android (C++ 기반 UI 재사용)
+  - 옵션 C: 완전 Java/Kotlin 재작성
+
+3) 개발 환경 준비
+  - 설치: Android Studio, Android SDK, NDK, CMake, Gradle
+  - macOS에서 sdkmanager 예시:
+    sdkmanager "platform-tools" "platforms;android-33" "ndk;25.2.9519653" "cmake;3.22.1"
+
+4) 빌드 시스템 마이그레이션
+  - 권장: Visual Studio 빌드(.vcxproj) -> CMake로 변환
+  - 간단한 CMake 예시:
+    cmake_minimum_required(VERSION 3.10)
+    project(fms_native)
+    set(CMAKE_CXX_STANDARD 17)
+    add_library(fms_core SHARED src/core/file1.cpp src/core/file2.cpp)
+    target_include_directories(fms_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/common/include)
+
+  - Gradle 연동 예시 (앱 module build.gradle):
+    externalNativeBuild { cmake { path "CMakeLists.txt" } }
+
+5) 우선순위: 핵심 로직 먼저
+  - UI와 무관한 코드(알고리즘, 통신, 데이터 처리)부터 NDK로 빌드 성공시키자.
+  - JNI 샘플로 Android에서 네이티브 함수 호출 확인
+
+6) Windows 전용 API 대체 가이드
+  - Registry -> SharedPreferences 또는 파일/SQLite
+  - Win32 GUI -> Android Activity/Views 또는 Qt
+  - Windows Service -> Android Service / Foreground Service
+  - Win-specific threading -> std::thread / pthreads
+  - Sockets, file I/O -> POSIX 표준으로 포팅
+
+7) 하드웨어/드라이버 대응
+  - 공급업체의 Android용 SDK 확인
+  - 없다면: JNI로 네이티브 데몬/드라이버 연동 또는 Android의 USB/Serial API 사용
+
+8) UI 포팅 전략
+  - Android native UI 권장: Activity/Fragment 기반으로 화면 재작성
+  - Qt 사용시: Qt Quick/Widgets로 UI 재사용 가능(라이선스 및 APK 크기 고려)
+
+9) 테스트·디버깅·성능
+  - adb logcat, Android Studio LLDB, ndk-stack, Android Profiler 사용
+  - 작은 단위로 지속 빌드/테스트
+
+10) CI 및 자동화
+  - GitHub Actions로 Android 빌드: runner에 SDK/NDK 설치 후 `./gradlew assembleDebug`
+  - NDK build/cmake step 필요
+
+11) 패키징 및 배포
+  - ABI splits(armeabi-v7a, arm64-v8a 등) 고려
+  - 서명, 권한(네트워크, 마이크, USB 등) 구성
+
+12) 장기 고려사항
+  - 보안(민감정보 처리), 라이선스(Qt 등), 유지보수(플랫폼 추상층 설계)
+
+실제 예제: 간단 JNI
+- C++: src/native-lib.cpp
+  extern "C" JNIEXPORT jstring JNICALL Java_com_example_app_MainActivity_stringFromJNI(JNIEnv* env, jobject) { return env->NewStringUTF("Hello from native"); }
+- Java: MainActivity.java
+  static { System.loadLibrary("fms_core"); } public native String stringFromJNI();
+
+권장 체크리스트 (단계별)
+1. `FMS.sln` 내 비-UI 모듈 선정
+2. `CMakeLists.txt` 작성(한 모듈로 시작)
+3. Android Studio 프로젝트 생성 및 NDK 빌드 확인
+4. JNI로 앱에서 네이티브 호출 검증
+5. Windows 전용 API 대체 설계
+6. UI 재구현
+7. 하드웨어 종속성 처리
+8. CI 구성 및 자동화
+
+추천 자료
+- Android NDK: https://developer.android.com/ndk
+- JNI 가이드: https://developer.android.com/training/articles/perf-jni
+- Qt for Android: https://doc.qt.io/qt-6/android-support.html
+- Git LFS(대용량 파일 관리): https://git-lfs.github.com/
+
+다음으로 제가 도와드릴 수 있는 작업(선택)
+- A: 코드베이스 자동 인벤토리 스캔 스크립트 작성 및 실행
+- B: `CMakeLists.txt` 템플릿 및 Android Studio 샘플 프로젝트 생성
+- C: Qt 기반 포팅 샘플/안내
+
+끝.
