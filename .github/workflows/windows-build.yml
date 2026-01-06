@@ -1,0 +1,61 @@
+name: Windows MSBuild
+
+on:
+  push:
+    branches: [ main ]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Release, Debug]
+        platform: [x64, Win32]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Restore NuGet packages (optional)
+        run: |
+          nuget restore FMS.sln || echo "No NuGet restore needed"
+
+      - name: Build solution
+        run: msbuild FMS.sln /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /m
+
+      - name: Collect build outputs
+        run: |
+          $out = "output/${{ matrix.configuration }}-${{ matrix.platform }}"
+          New-Item -ItemType Directory -Path $out -Force | Out-Null
+          Get-ChildItem -Path . -Recurse -Include *.exe,*.dll,*.lib -ErrorAction SilentlyContinue | ForEach-Object { Copy-Item $_.FullName -Destination $out -Force }
+          Get-ChildItem $out -Recurse | ForEach-Object { Write-Output $_.FullName }
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fms-${{ matrix.configuration }}-${{ matrix.platform }}
+          path: output/${{ matrix.configuration }}-${{ matrix.platform }}
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+
+      - name: Create or update GitHub Release and upload assets
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: 'release-artifacts/**/**'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
