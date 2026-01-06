@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, feature/** ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            generator: "Unix Makefiles"
+          - os: macos-latest
+            generator: "Unix Makefiles"
+          - os: windows-latest
+            generator: "Visual Studio 17 2022"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies (Linux/macOS)
+      if: matrix.os != 'windows-latest'
+      run: |
+        if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+        else
+          /bin/bash -lc "brew update || true"
+          /bin/bash -lc "brew install cmake || true"
+        fi
+
+    - name: Configure CMake (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cmake -S . -B build -DBUILD_NATIVE=ON -DBUILD_NATIVE_TESTS=ON -DUSE_REAL_HWLOG=ON -G "${{ matrix.generator }}"
+
+    - name: Configure CMake (Linux/macOS)
+      if: matrix.os != 'windows-latest'
+      run: |
+        cmake -S . -B build -DBUILD_NATIVE=ON -DBUILD_NATIVE_TESTS=ON -G "${{ matrix.generator }}"
+
+    - name: Build
+      run: |
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          cmake --build build --config Release -- /m
+        else
+          cmake --build build --config Release -- -j 2
+        fi
+
+    - name: Run tests
+      run: |
+        # run ctest from the native build subdirectory so per-target CTest files are found
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          cd build/native && ctest -C Release --output-on-failure
+        else
+          cd build/native && ctest --output-on-failure
+        fi
